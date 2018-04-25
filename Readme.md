@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Evgeniy Kobrikov](https://up.htmlacademy.ru/php/5/user/234035).
-* Наставник: `Неизвестно`.
+* Наставник: [Игорь Антонов](https://htmlacademy.ru/profile/antonov).
 
 ---
 
