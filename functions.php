@@ -21,3 +21,11 @@ function render_template($tpl, $data) {
     require_once "$path";
     return ob_get_clean();
 }
+
+function time_left() {
+    date_default_timezone_set('Europe/Moscow');
+    $timer = strtotime('tomorrow') - strtotime('now');
+    $hours = floor($timer / 3600);
+    $minutes = floor(($timer % 3600) / 60);
+    return sprintf('%02d', $hours) . ':' . sprintf('%02d', $minutes);
+}
