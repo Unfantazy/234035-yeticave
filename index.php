@@ -54,16 +54,12 @@ foreach ($lots as $key => &$val) {
     $val['url'] = htmlspecialchars($val['url']);
 }
 
-$tpl_index_path = 'templates/index.php';
-$tpl_layout_path = 'templates/layout.php';
-
-$content = render_template($tpl_index_path, $lots);
-
-$output = render_template($tpl_layout_path, [
+$content = render_template('index', $lots);
+$output = render_template('layout', [
     'title' => 'Главная',
-    'auth' => $is_auth,
-    'name' => $user_name,
-    'avatar' => $user_avatar,
+    'is_auth' => $is_auth,
+    'user_name' => $user_name,
+    'user_avatar' => $user_avatar,
     'categories' => $categories,
     'content' => $content
 ]);
