@@ -30,7 +30,7 @@
         <?php foreach ($data as $key => $val): ?>
         <li class="lots__item lot">
             <div class="lot__image">
-                <img src="<?=$val['url']; ?>" width="350" height="260" alt="Сноуборд">
+                <img src="<?=$val['image']; ?>" width="350" height="260" alt="Сноуборд">
             </div>
             <div class="lot__info">
                 <span class="lot__category"><?=$val['category']; ?></span>
@@ -38,7 +38,7 @@
                 <div class="lot__state">
                     <div class="lot__rate">
                         <span class="lot__amount">Стартовая цена</span>
-                        <span class="lot__cost"><?=format_price($val['price']); ?></span>
+                        <span class="lot__cost"><?=format_price($val['initial_price']); ?></span>
                     </div>
                     <div class="lot__timer timer">
                       <?=time_left(); ?>

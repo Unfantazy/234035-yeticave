@@ -28,7 +28,7 @@ VALUES ("2018-05-09 15:15:10", 15000, 1, 1),
 SELECT * FROM categories;
 
 -- выборка новых лотов (получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, количество ставок, название категории)
-SELECT lots.name, lots.initial_price, lots.image, categories.name, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
+SELECT lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
 FROM lots
 INNER JOIN categories ON lots.category_id = categories.id
 LEFT JOIN bets ON lots.id = bets.lot_id
