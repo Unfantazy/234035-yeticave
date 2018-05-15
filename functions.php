@@ -29,3 +29,11 @@ function time_left() {
     $minutes = floor(($timer % 3600) / 60);
     return sprintf('%02d', $hours) . ':' . sprintf('%02d', $minutes);
 }
+
+function get_data($connect, $sql) {
+    $result = mysqli_query($connect, $sql);
+    if ($result) {
+        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+    return $data;
+}
