@@ -1,27 +1,20 @@
 <?php
 
 require_once 'functions.php';
+require_once 'db_functions.php';
+require_once 'config.php';
 
 $is_auth = (bool) rand(0, 1);
 
 $user_name = 'Константин';
 $user_avatar = 'img/user.jpg';
 
-$link = mysqli_connect("localhost", "root", "","yeticave");
+$link = mysqli_connect($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_database']);
 mysqli_set_charset($link, "utf8");
 
 if ($link) {
-    $sql_lots = "
-    SELECT lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
-    FROM lots
-    INNER JOIN categories ON lots.category_id = categories.id
-    LEFT JOIN bets ON lots.id = bets.lot_id
-    WHERE lots.completion_date > NOW()
-    GROUP BY lots.name, lots.initial_price, lots.image, categories.name, lots.creation_date, lots.id
-    ORDER BY lots.creation_date DESC;";
-    $sql_category = "
-    SELECT * FROM categories;
-    ";
+    $sql_lots = get_lots();
+    $sql_category = get_categories();
     $lots = get_data($link, $sql_lots);
     $categories = get_data($link, $sql_category);
 }
