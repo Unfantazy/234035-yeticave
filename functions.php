@@ -10,7 +10,7 @@ function format_price($price) {
     return $edited_price . ' ₽';
 }
 
-function render_template($tpl, $data, $extra = []) {
+function render_template($tpl, $data, $extra = [], $values = []) {
     require 'config.php';
     $path = $config['tpl_path'] . $tpl . '.php';
     if (!file_exists($path)) {
@@ -18,6 +18,7 @@ function render_template($tpl, $data, $extra = []) {
     }
     extract($data, EXTR_PREFIX_SAME, "d_");
     extract($extra, EXTR_PREFIX_SAME, "d_");
+    extract($values, EXTR_PREFIX_SAME, "d_");
     ob_start();
     require_once "$path";
     return ob_get_clean();
