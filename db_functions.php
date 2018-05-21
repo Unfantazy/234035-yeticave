@@ -41,7 +41,7 @@ function get_bets_for_id($lot_id) {
 function post_lot() {
     return "
     INSERT INTO lots (creation_date, name, description, image, initial_price, completion_date, step_lot, category_id, author_id, winner_id)
-    VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, NULL, NULL);
+    VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, 1, NULL);
     ";
 }
 
