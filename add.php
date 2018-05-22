@@ -13,6 +13,8 @@ $user_avatar = 'img/user.jpg';
 $errors = [];
 $add_lot = [];
 
+date_default_timezone_set('Europe/Moscow');
+
 if ($link) {
     $sql_category = get_categories();
     $categories = get_data($link, $sql_category);
@@ -32,11 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         foreach ($categories as $key => $value) {
             if ($value['name'] == $_POST['category']) {
-              $add_lot['category_id'] = $value['id'];
+                $add_lot['category_id'] = $value['id'];
             }
         }
         if (!isset($add_lot['category_id'])) {
-          $errors['category'] = 'Поле не заполнено';
+            $errors['category'] = 'Поле не заполнено';
+        }
+        if (strtotime($_POST['lot-date']) <= strtotime('now')) {
+            $errors['lot-date'] = 'Некорретные данные';
         }
     }
 
@@ -46,10 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (isset($_FILES['lot_image'])) {
+    if (isset($_FILES['lot_image']) && $_FILES['lot_image']['tmp_name']) {
         $file_name = uniqid() . '.jpg';
         $add_lot['path'] = 'img/' . $file_name;
         move_uploaded_file($_FILES['lot_image']['tmp_name'], $add_lot['path']);
+    } else {
+        $errors['photo'] = 'Изображение не загружено';
     }
 
     if (empty($errors)) {

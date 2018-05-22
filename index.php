@@ -17,11 +17,12 @@ if ($link) {
     $categories = get_data($link, $sql_category);
 }
 
-foreach ($lots as $key => &$val) {
-    $val['name'] = htmlspecialchars($val['name']);
-    $val['category'] = htmlspecialchars($val['category']);
-    $val['price'] = htmlspecialchars($val['price']);
-    $val['url'] = htmlspecialchars($val['url']);
+foreach ($lots as $i => $array) {
+    foreach ($array as $key => &$value) {
+        if (is_string($value)) {
+            $array[$key] = htmlspecialchars($value, ENT_QUOTES);
+        }
+    }
 }
 
 $content = render_template('index', $lots);

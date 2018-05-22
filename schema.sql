@@ -10,7 +10,7 @@ CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   reg_date DATETIME,
   email VARCHAR(64),
-  name VARCHAR(64),
+  name VARCHAR(128),
   password VARCHAR(64),
   avatar VARCHAR(128),
   contact VARCHAR(128)
@@ -18,7 +18,7 @@ CREATE TABLE users (
 
 CREATE TABLE categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(64)
+  name VARCHAR(128)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE bets (
@@ -34,7 +34,7 @@ CREATE TABLE bets (
 CREATE TABLE lots (
   id INT AUTO_INCREMENT PRIMARY KEY,
   creation_date DATETIME,
-  name VARCHAR(64),
+  name VARCHAR(128),
   description VARCHAR(128),
   image VARCHAR(128),
   initial_price INT,

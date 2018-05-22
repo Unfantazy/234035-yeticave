@@ -50,12 +50,14 @@
         <textarea id="message" name="message" placeholder="Напишите описание лота"><?=$value; ?></textarea>
         <span class="form__error">Напишите описание лота</span>
     </div>
-    <div class="form__item form__item--file"> <!-- form__item--uploaded -->
+    <?php $class_name = empty($values['path']) ? "" : "form__item--uploaded";
+    $value = isset($values['path']) ? $values['path'] : ""; ?>
+    <div class="form__item form__item--file <?=$class_name; ?>"> <!-- form__item--uploaded -->
         <label>Изображение</label>
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
             <div class="preview__img">
-                <img src="img/avatar.jpg" width="113" height="113" alt="Изображение лота">
+                <img src="<?=$value; ?>" width="113" height="113" alt="Изображение лота">
             </div>
         </div>
         <div class="form__input-file">
