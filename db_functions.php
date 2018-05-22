@@ -45,6 +45,20 @@ function post_lot() {
     ";
 }
 
+function check_email() {
+    return "
+    SELECT users.id FROM users
+    WHERE users.email = ?;
+    ";
+}
+
+function post_user() {
+    return "
+    INSERT INTO users (reg_date, email, name, password, avatar, contact)
+    VALUES (NOW(), ?, ?, ?, ?, ?);
+    ";
+}
+
 function get_data($connect, $sql) {
     $result = mysqli_query($connect, $sql);
     if (!$result) {
