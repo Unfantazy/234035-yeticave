@@ -47,7 +47,7 @@
         <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
           <p class="lot-item__form-item">
             <label for="cost">Ваша ставка</label>
-            <input id="cost" type="number" name="cost" placeholder="12 000">
+            <input id="cost" type="number" name="cost" placeholder="<?=($data['betsPrice']+$data['step_lot'])?>">
           </p>
           <button type="submit" class="button">Сделать ставку</button>
         </form>
