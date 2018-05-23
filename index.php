@@ -19,9 +19,9 @@ if ($link) {
 
 foreach ($lots as $i => $array) {
     foreach ($array as $key => &$value) {
-        if (is_string($value)) {
-            $array[$key] = htmlspecialchars($value, ENT_QUOTES);
-        }
+        // if (is_string($value)) {
+            // $lots[$i][$key] = htmlspecialchars($value, ENT_QUOTES);
+        // }
     }
 }
 
