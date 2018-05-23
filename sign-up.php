@@ -6,10 +6,14 @@ require_once 'functions.php';
 require_once 'db_functions.php';
 require_once 'mysql_helper.php';
 
-$is_auth = (bool) rand(0, 1);
+$is_auth = false;
 
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
+if (isset($_SESSION['id'])) {
+  $is_auth = true;
+  $user_name = $_SESSION['name'];
+  $user_avatar = $_SESSION['avatar'];
+}
+
 $errors = [];
 $new_user = [];
 
@@ -24,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     foreach ($required as $field) {
         if (empty($new_user[$field])) {
-            var_dump($new_user['email']);
             $errors[$field] = 'Поле не заполнено';
             continue;
         }
@@ -62,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $res = mysqli_stmt_execute($stmt);
 
         if ($res) {
-            header("Location: / ");
+            header("Location: /login.php ");
         }
     }
 }

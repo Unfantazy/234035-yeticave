@@ -6,10 +6,17 @@ require_once 'functions.php';
 require_once 'db_functions.php';
 require_once 'mysql_helper.php';
 
-$is_auth = (bool) rand(0, 1);
+$is_auth = false;
 
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
+if (isset($_SESSION['id'])) {
+  $is_auth = true;
+  $user_name = $_SESSION['name'];
+  $user_avatar = $_SESSION['avatar'];
+} else {
+  http_response_code(403);
+  exit();
+}
+
 $errors = [];
 $add_lot = [];
 

@@ -5,10 +5,13 @@ require_once 'db_functions.php';
 require_once 'config.php';
 require_once 'init.php';
 
-$is_auth = (bool) rand(0, 1);
+$is_auth = false;
 
-$user_name = 'Константин';
-$user_avatar = 'img/user.jpg';
+if (isset($_SESSION['id'])) {
+  $is_auth = true;
+  $user_name = $_SESSION['name'];
+  $user_avatar = $_SESSION['avatar'];
+}
 
 if ($link) {
     $sql_lots = get_lots();
@@ -19,9 +22,9 @@ if ($link) {
 
 foreach ($lots as $i => $array) {
     foreach ($array as $key => &$value) {
-        // if (is_string($value)) {
-            // $lots[$i][$key] = htmlspecialchars($value, ENT_QUOTES);
-        // }
+        if (is_string($value)) {
+            $lots[$i][$key] = htmlspecialchars($value, ENT_QUOTES);
+        }
     }
 }
 

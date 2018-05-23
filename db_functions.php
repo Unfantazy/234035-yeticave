@@ -47,7 +47,7 @@ function post_lot() {
 
 function check_email() {
     return "
-    SELECT users.id FROM users
+    SELECT users.id, users.name, users.avatar, users.password FROM users
     WHERE users.email = ?;
     ";
 }
