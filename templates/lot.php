@@ -31,6 +31,7 @@
       <p class="lot-item__description"><?=$data['description']; ?></p>
     </div>
     <div class="lot-item__right">
+      <?php if (isset($_SESSION['id'])): ?>
       <div class="lot-item__state">
         <div class="lot-item__timer timer">
           <?=time_left(); ?>
@@ -52,6 +53,7 @@
           <button type="submit" class="button">Сделать ставку</button>
         </form>
       </div>
+      <?php endif; ?>
       <div class="history">
         <h3>История ставок (<span><?=$data['betsCount']; ?></span>)</h3>
         <table class="history__list">
