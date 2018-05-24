@@ -22,7 +22,7 @@ if ($link) {
     $categories = get_data($link, $sql_category);
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_user = $_POST;
     $required = ['email', 'password', 'name', 'message'];
 

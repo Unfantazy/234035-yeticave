@@ -27,7 +27,7 @@ if ($link) {
     $categories = get_data($link, $sql_category);
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $add_lot = $_POST;
 
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($errors)) {
         $sql = post_lot();
-        $stmt = db_get_prepare_stmt($link, $sql, [$add_lot['lot-name'], $add_lot['message'], $add_lot['path'], $add_lot['lot-rate'], $add_lot['lot-date'], $add_lot['lot-step'], $add_lot['category_id']]);
+        $stmt = db_get_prepare_stmt($link, $sql, [$add_lot['lot-name'], $add_lot['message'], $add_lot['path'], $add_lot['lot-rate'], $add_lot['lot-date'], $add_lot['lot-step'], $add_lot['category_id'], $_SESSION['id']]);
         $res = mysqli_stmt_execute($stmt);
 
         if ($res) {

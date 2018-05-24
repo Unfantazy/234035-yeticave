@@ -35,6 +35,7 @@ else {
             $val['image'] = htmlspecialchars($val['image']);
             $val['step_lot'] = htmlspecialchars($val['step_lot']);
             $val['category'] = htmlspecialchars($val['category']);
+            $val['author_id'] = htmlspecialchars($val['author_id']);
             $val['betsCount'] = htmlspecialchars($val['betsCount']);
             $val['betsPrice'] = htmlspecialchars($val['betsPrice']);
         }
@@ -51,7 +52,7 @@ else {
             'categories' => $categories,
             'content' => $content
         ]);
-
+        $_SESSION['current_lot'] = $current_lot[0];
         print($output);
     }
 }
