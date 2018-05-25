@@ -20,7 +20,7 @@ function get_categories() {
 
 function get_lot_for_id($lot_id) {
     return "
-    SELECT lots.name, lots.description, lots.image, lots.step_lot, categories.name as category, COUNT(bets.lot_id) as betsCount, IFNULL(MAX(bets.amount), 0) + lots.initial_price as betsPrice
+    SELECT lots.id, lots.name, lots.description, lots.image, lots.step_lot, lots.author_id, categories.name as category, COUNT(bets.lot_id) as betsCount, IFNULL(MAX(bets.amount), 0) + lots.initial_price as betsPrice
     FROM lots
     INNER JOIN categories ON lots.category_id = categories.id
     LEFT JOIN bets ON lots.id = bets.lot_id
@@ -41,7 +41,7 @@ function get_bets_for_id($lot_id) {
 function post_lot() {
     return "
     INSERT INTO lots (creation_date, name, description, image, initial_price, completion_date, step_lot, category_id, author_id, winner_id)
-    VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, 1, NULL);
+    VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, NULL);
     ";
 }
 
@@ -56,6 +56,13 @@ function post_user() {
     return "
     INSERT INTO users (reg_date, email, name, password, avatar, contact)
     VALUES (NOW(), ?, ?, ?, ?, ?);
+    ";
+}
+
+function post_bet() {
+    return "
+    INSERT INTO bets (date, amount, user_id, lot_id)
+    VALUES (NOW(), ?, ?, ?);
     ";
 }
 

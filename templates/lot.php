@@ -31,7 +31,7 @@
       <p class="lot-item__description"><?=$data['description']; ?></p>
     </div>
     <div class="lot-item__right">
-      <?php if (isset($_SESSION['id'])): ?>
+      <?php if (isset($_SESSION['id']) && $_SESSION['id'] != $data['author_id']): ?>
       <div class="lot-item__state">
         <div class="lot-item__timer timer">
           <?=time_left(); ?>
@@ -45,7 +45,7 @@
             Мин. ставка <span><?=$data['step_lot']; ?> р</span>
           </div>
         </div>
-        <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
+        <form class="lot-item__form" action="cost.php" method="post">
           <p class="lot-item__form-item">
             <label for="cost">Ваша ставка</label>
             <input id="cost" type="number" name="cost" placeholder="<?=($data['betsPrice']+$data['step_lot'])?>">
