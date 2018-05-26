@@ -59,6 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_FILES['lot_image']) && $_FILES['lot_image']['tmp_name']) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_name = $_FILES['lot_image']['tmp_name'];
+        $file_type = finfo_file($finfo, $file_name);
+        if ($file_type !== 'image/jpeg') {
+            $errors['photo'] = "Загрузите картинку в формате jpg";
+        }
+    }
+
+    if (isset($_FILES['lot_image']) && $_FILES['lot_image']['tmp_name']) {
         $file_name = uniqid() . '.jpg';
         $add_lot['path'] = 'img/' . $file_name;
         move_uploaded_file($_FILES['lot_image']['tmp_name'], $add_lot['path']);
@@ -81,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $content = render_template('add', $categories, $errors, $add_lot);
 $output = render_template('layout', [
-    'title' => 'Главная',
+    'title' => 'Добавление нового лота',
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'user_avatar' => $user_avatar,

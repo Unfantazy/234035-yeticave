@@ -1,23 +1,10 @@
 <nav class="nav">
   <ul class="nav__list container">
-    <li class="nav__item">
-      <a href="all-lots.html">Доски и лыжи</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Крепления</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Ботинки</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Одежда</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Инструменты</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Разное</a>
-    </li>
+      <?php foreach ($data as $key => $val): ?>
+          <li class="nav__item">
+              <a href="all-lots.php?category=<?=$val['name']; ?>"><?=$val['name']; ?></a>
+          </li>
+      <?php endforeach; ?>
   </ul>
 </nav>
 <form class="form container <? if(!empty($extra)): ?>form--invalid<? endif ?>" action="login.php" method="post"> <!-- form--invalid -->

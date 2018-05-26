@@ -1,23 +1,10 @@
 <nav class="nav">
   <ul class="nav__list container">
-    <li class="nav__item">
-      <a href="all-lots.html">Доски и лыжи</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Крепления</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Ботинки</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Одежда</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Инструменты</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Разное</a>
-    </li>
+      <?php foreach ($values as $key => $val): ?>
+          <li class="nav__item">
+              <a href="all-lots.php?category=<?=$val['name']; ?>"><?=$val['name']; ?></a>
+          </li>
+      <?php endforeach; ?>
   </ul>
 </nav>
 <section class="lot-item container">
@@ -49,6 +36,7 @@
           <p class="lot-item__form-item">
             <label for="cost">Ваша ставка</label>
             <input id="cost" type="number" name="cost" placeholder="<?=($data['betsPrice']+$data['step_lot'])?>">
+            <b><?=$_SESSION['cost']; ?></b>
           </p>
           <button type="submit" class="button">Сделать ставку</button>
         </form>

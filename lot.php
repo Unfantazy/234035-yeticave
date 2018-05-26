@@ -43,9 +43,9 @@ else {
         $sql_bets_for_id = get_bets_for_id($id);
         $current_bets = get_data($link, $sql_bets_for_id);
 
-        $content = render_template('lot', $current_lot[0], $current_bets);
+        $content = render_template('lot', $current_lot[0], $current_bets, $categories);
         $output = render_template('layout', [
-            'title' => 'Главная',
+            'title' => 'Просмотр лота',
             'is_auth' => $is_auth,
             'user_name' => $user_name,
             'user_avatar' => $user_avatar,
@@ -54,5 +54,6 @@ else {
         ]);
         $_SESSION['current_lot'] = $current_lot[0];
         print($output);
+        unset($_SESSION['cost']);
     }
 }

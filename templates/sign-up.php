@@ -1,23 +1,10 @@
 <nav class="nav">
   <ul class="nav__list container">
-    <li class="nav__item">
-      <a href="all-lots.html">Доски и лыжи</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Крепления</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Ботинки</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Одежда</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Инструменты</a>
-    </li>
-    <li class="nav__item">
-      <a href="all-lots.html">Разное</a>
-    </li>
+      <?php foreach ($data as $key => $val): ?>
+          <li class="nav__item">
+              <a href="all-lots.php?category=<?=$val['name']; ?>"><?=$val['name']; ?></a>
+          </li>
+      <?php endforeach; ?>
   </ul>
 </nav>
 
@@ -51,7 +38,8 @@
     <textarea id="message" name="message" placeholder="Напишите как с вами связаться" ><?=$value; ?></textarea>
     <span class="form__error">Напишите как с вами связаться</span>
   </div>
-  <div class="form__item form__item--file form__item--last">
+  <?php $class_name = isset($extra['user_avatar']) ? "form__item--invalid" : ""; ?>
+  <div class="form__item form__item--file form__item--last <?=$class_name; ?>">
     <label>Аватар</label>
     <div class="preview">
       <button class="preview__remove" type="button">x</button>
@@ -65,8 +53,9 @@
         <span>+ Добавить</span>
       </label>
     </div>
+    <span class="form__error">Загрузите картинку в формате jpg</span>
   </div>
   <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
   <button type="submit" class="button">Зарегистрироваться</button>
-  <a class="text-link" href="#">Уже есть аккаунт</a>
+  <a class="text-link" href="login.php">Уже есть аккаунт</a>
 </form>

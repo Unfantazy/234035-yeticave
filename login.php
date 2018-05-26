@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $content = render_template('login', $categories, $errors, $auth);
 $output = render_template('layout', [
-    'title' => 'Главная',
+    'title' => 'Авторизация на сайте',
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'user_avatar' => $user_avatar,
