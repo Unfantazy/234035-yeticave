@@ -1,0 +1,13 @@
+{
+    "name": "kobrikov/234035-yeticave",
+    "description": "Website for internet auction",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Evgeniy Kobrikov",
+            "email": "mail@kobrikov.com"
+        }
+    ],
+    "require": {}
+}

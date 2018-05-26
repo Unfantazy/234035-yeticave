@@ -5,6 +5,7 @@ require_once 'init.php';
 require_once 'functions.php';
 require_once 'db_functions.php';
 require_once 'mysql_helper.php';
+require_once 'vendor/autoload.php';
 
 $is_auth = false;
 

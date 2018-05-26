@@ -1,5 +1,7 @@
 <?php
 
+require_once 'vendor/autoload.php';
+
 /**
  * Функция запроса на получение лотов
  * @return возвращает SQL-запрос
