@@ -48,7 +48,4 @@ CREATE TABLE lots (
   FOREIGN KEY (winner_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE INDEX lots ON lots(category_id);
-
-CREATE UNIQUE INDEX name ON lots(name);
-CREATE UNIQUE INDEX email ON users(email);
+CREATE FULLTEXT INDEX lots_search ON lots(name, description);
