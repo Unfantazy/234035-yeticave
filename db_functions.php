@@ -1,5 +1,11 @@
 <?php
 
+require_once 'vendor/autoload.php';
+
+/**
+ * Функция запроса на получение лотов
+ * @return возвращает SQL-запрос
+ */
 function get_lots() {
     return "
     SELECT lots.id, lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
@@ -12,6 +18,10 @@ function get_lots() {
     ";
 }
 
+/**
+ * Функция запроса на количество лотов по поиску
+ * @return возвращает SQL-запрос
+ */
 function search_count_lots() {
     return "
     SELECT lots.id, lots.name, lots.description
@@ -20,6 +30,39 @@ function search_count_lots() {
     ";
 }
 
+/**
+ * Функция запроса на количество лотов по категории
+ * @return возвращает SQL-запрос
+ */
+function count_lots_for_category() {
+    return "
+    SELECT lots.id, lots.name, categories.name as category
+    FROM lots
+    INNER JOIN categories ON lots.category_id = categories.id
+    WHERE lots.completion_date > NOW() AND categories.name = ?;
+    ";
+}
+
+/**
+ * Функция запроса на лотов по категории
+ * @return возвращает SQL-запрос
+ */
+function lots_for_category() {
+    return "
+    SELECT lots.id, lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
+    FROM lots
+    INNER JOIN categories ON lots.category_id = categories.id
+    LEFT JOIN bets ON lots.id = bets.lot_id
+    WHERE lots.completion_date > NOW() AND categories.name = ?
+    GROUP BY lots.name, lots.initial_price, lots.image, categories.name, lots.creation_date, lots.id
+    ORDER BY lots.creation_date DESC LIMIT ? OFFSET ?;
+    ";
+}
+
+/**
+ * Функция запроса на лотов по поиску
+ * @return возвращает SQL-запрос
+ */
 function search_lots() {
     return "
     SELECT lots.id, lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
@@ -32,12 +75,20 @@ function search_lots() {
     ";
 }
 
+/**
+ * Функция запроса на получение категорий
+ * @return возвращает SQL-запрос
+ */
 function get_categories() {
     return "
     SELECT * FROM categories;
     ";
 }
 
+/**
+ * Функция запроса на получение лота по идентификатору
+ * @return возвращает SQL-запрос
+ */
 function get_lot_for_id($lot_id) {
     return "
     SELECT lots.id, lots.name, lots.description, lots.image, lots.step_lot, lots.author_id, categories.name as category, COUNT(bets.lot_id) as betsCount, IFNULL(MAX(bets.amount), 0) + lots.initial_price as betsPrice
@@ -48,6 +99,10 @@ function get_lot_for_id($lot_id) {
   ";
 }
 
+/**
+ * Функция запроса на получение ставок по идентификатору лота
+ * @return возвращает SQL-запрос
+ */
 function get_bets_for_id($lot_id) {
     return "
     SELECT users.name, bets.amount, bets.date
@@ -58,6 +113,10 @@ function get_bets_for_id($lot_id) {
     ";
 }
 
+/**
+ * Функция запроса на добавление лота
+ * @return возвращает SQL-запрос
+ */
 function post_lot() {
     return "
     INSERT INTO lots (creation_date, name, description, image, initial_price, completion_date, step_lot, category_id, author_id, winner_id)
@@ -65,6 +124,10 @@ function post_lot() {
     ";
 }
 
+/**
+ * Функция запроса на проверку пользователя по email
+ * @return возвращает SQL-запрос
+ */
 function check_email() {
     return "
     SELECT users.id, users.name, users.avatar, users.password FROM users
@@ -72,6 +135,10 @@ function check_email() {
     ";
 }
 
+/**
+ * Функция запроса на добавление пользователя
+ * @return возвращает SQL-запрос
+ */
 function post_user() {
     return "
     INSERT INTO users (reg_date, email, name, password, avatar, contact)
@@ -79,6 +146,10 @@ function post_user() {
     ";
 }
 
+/**
+ * Функция запроса на добавление ставки
+ * @return возвращает SQL-запрос
+ */
 function post_bet() {
     return "
     INSERT INTO bets (date, amount, user_id, lot_id)
@@ -86,6 +157,12 @@ function post_bet() {
     ";
 }
 
+/**
+ * Функция отработки sql-запроса
+ * @param $connect данные соединения с базой данных
+ * @param $sql ранее подготовленный запрос sql
+ * @return возвращает массив данных из запроса
+ */
 function get_data($connect, $sql) {
     $result = mysqli_query($connect, $sql);
     if (!$result) {

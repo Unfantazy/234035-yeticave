@@ -1,23 +1,10 @@
 <nav class="nav">
     <ul class="nav__list container">
-        <li class="nav__item">
-            <a href="all-lots.html">Доски и лыжи</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Крепления</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Ботинки</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Одежда</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Инструменты</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Разное</a>
-        </li>
+        <?php foreach ($data as $key => $val): ?>
+            <li class="nav__item">
+                <a href="all-lots.php?category=<?=$val['name']; ?>"><?=$val['name']; ?></a>
+            </li>
+        <?php endforeach; ?>
     </ul>
 </nav>
 <form class="form form--add-lot container <? if(!empty($extra)): ?>form--invalid<? endif ?>" action="add.php" method="post" enctype="multipart/form-data">
@@ -50,9 +37,10 @@
         <textarea id="message" name="message" placeholder="Напишите описание лота"><?=$value; ?></textarea>
         <span class="form__error">Напишите описание лота</span>
     </div>
-    <?php $class_name = empty($values['path']) ? "" : "form__item--uploaded";
+    <?php $class_upload = empty($extra['path']) ? "" : "form__item--uploaded";
+    $class_name = isset($extra['photo']) ? "form__item--invalid" : "";
     $value = isset($values['path']) ? $values['path'] : ""; ?>
-    <div class="form__item form__item--file <?=$class_name; ?>"> <!-- form__item--uploaded -->
+    <div class="form__item form__item--file <?=$class_upload; ?> <?=$class_name; ?>"> <!-- form__item--uploaded -->
         <label>Изображение</label>
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
@@ -66,6 +54,7 @@
                 <span>+ Добавить</span>
             </label>
         </div>
+        <span class="form__error"><?=$extra['photo']; ?></span>
     </div>
     <div class="form__container-three">
         <?php $class_name = isset($extra['lot-rate']) ? "form__item--invalid" : "";

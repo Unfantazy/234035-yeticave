@@ -5,6 +5,7 @@ require_once 'init.php';
 require_once 'functions.php';
 require_once 'db_functions.php';
 require_once 'mysql_helper.php';
+require_once 'vendor/autoload.php';
 
 $is_auth = false;
 
@@ -48,6 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if (isset($_FILES['user_avatar']) && $_FILES['user_avatar']['tmp_name']) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_name = $_FILES['user_avatar']['tmp_name'];
+        $file_type = finfo_file($finfo, $file_name);
+        if ($file_type !== 'image/jpeg') {
+            $errors['user_avatar'] = "Загрузите картинку в формате jpg";
+        }
+    }
+
     if (empty($errors)) {
 
         if (isset($_FILES['user_avatar']) && $_FILES['user_avatar']['tmp_name']) {
@@ -72,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $content = render_template('sign-up', $categories, $errors, $new_user);
 $output = render_template('layout', [
-    'title' => 'Главная',
+    'title' => 'Регистрация аккаунта',
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'user_avatar' => $user_avatar,

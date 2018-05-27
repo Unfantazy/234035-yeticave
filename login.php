@@ -5,6 +5,7 @@ require_once 'init.php';
 require_once 'functions.php';
 require_once 'db_functions.php';
 require_once 'mysql_helper.php';
+require_once 'vendor/autoload.php';
 
 $is_auth = false;
 $errors = [];
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $content = render_template('login', $categories, $errors, $auth);
 $output = render_template('layout', [
-    'title' => 'Главная',
+    'title' => 'Авторизация на сайте',
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'user_avatar' => $user_avatar,
