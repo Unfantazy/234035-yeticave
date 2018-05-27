@@ -21,7 +21,7 @@
       <?php if (isset($_SESSION['id']) && $_SESSION['id'] != $data['author_id']): ?>
       <div class="lot-item__state">
         <div class="lot-item__timer timer">
-          <?=time_left(); ?>
+          <?=time_left($data['completion_date']); ?>
         </div>
         <div class="lot-item__cost-state">
           <div class="lot-item__rate">

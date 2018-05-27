@@ -41,7 +41,7 @@
                         <span class="lot__cost"><?=format_price($val['initial_price']); ?></span>
                     </div>
                     <div class="lot__timer timer">
-                      <?=time_left(); ?>
+                      <?=time_left($val['completion_date']); ?>
                     </div>
                 </div>
             </div>

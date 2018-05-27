@@ -25,6 +25,11 @@ if ($link) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_user = $_POST;
+
+    foreach ($new_user as $key => $value) {
+        $new_user[$key] = htmlspecialchars($value, ENT_QUOTES);
+    }
+
     $required = ['email', 'password', 'name', 'message'];
 
     foreach ($required as $field) {
