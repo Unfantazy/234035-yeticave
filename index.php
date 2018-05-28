@@ -7,13 +7,7 @@ require_once 'init.php';
 require_once 'vendor/autoload.php';
 require_once 'getwinner.php';
 
-$is_auth = false;
-
-if (isset($_SESSION['id'])) {
-  $is_auth = true;
-  $user_name = $_SESSION['name'];
-  $user_avatar = $_SESSION['avatar'];
-}
+$is_auth = check_auth();
 
 if ($link) {
     $sql_lots = get_lots();
@@ -33,9 +27,9 @@ foreach ($lots as $i => $array) {
 $content = render_template('index', $lots);
 $output = render_template('layout', [
     'title' => 'Главная',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'user_avatar' => $user_avatar,
+    'is_auth' => $is_auth['is_auth'],
+    'user_name' => $is_auth['user_name'],
+    'user_avatar' => $is_auth['user_avatar'],
     'categories' => $categories,
     'content' => $content
 ]);

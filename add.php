@@ -7,13 +7,8 @@ require_once 'db_functions.php';
 require_once 'mysql_helper.php';
 require_once 'vendor/autoload.php';
 
-$is_auth = false;
-
-if (isset($_SESSION['id'])) {
-  $is_auth = true;
-  $user_name = $_SESSION['name'];
-  $user_avatar = $_SESSION['avatar'];
-} else {
+$is_auth = check_auth();
+if (!$is_auth['is_auth']) {
   http_response_code(403);
   exit();
 }
@@ -67,13 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_name = $_FILES['lot_image']['tmp_name'];
         $file_type = finfo_file($finfo, $file_name);
-        if ($file_type !== 'image/jpeg') {
-            $errors['photo'] = "Загрузите картинку в формате jpg";
+        if (($file_type !== 'image/jpeg') && ($file_type !== 'image/png')) {
+            $errors['photo'] = "Загрузите картинку в формате jpg или png";
         }
     }
 
     if (isset($_FILES['lot_image']) && $_FILES['lot_image']['tmp_name']) {
-        $file_name = uniqid() . '.jpg';
+        $ext = pathinfo($_FILES['lot_image']['name'], PATHINFO_EXTENSION);
+        $file_name = uniqid() . '.' . $ext;
         $add_lot['path'] = 'img/' . $file_name;
         move_uploaded_file($_FILES['lot_image']['tmp_name'], $add_lot['path']);
     } else {
@@ -96,9 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $content = render_template('add', $categories, $errors, $add_lot);
 $output = render_template('layout', [
     'title' => 'Добавление нового лота',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'user_avatar' => $user_avatar,
+    'is_auth' => $is_auth['is_auth'],
+    'user_name' => $is_auth['user_name'],
+    'user_avatar' => $is_auth['user_avatar'],
     'categories' => $categories,
     'content' => $content
 ]);

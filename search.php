@@ -7,13 +7,7 @@ require_once 'init.php';
 require_once 'mysql_helper.php';
 require_once 'vendor/autoload.php';
 
-$is_auth = false;
-
-if (isset($_SESSION['id'])) {
-  $is_auth = true;
-  $user_name = $_SESSION['name'];
-  $user_avatar = $_SESSION['avatar'];
-}
+$is_auth = check_auth();
 
 if (!isset($_GET['search'])) {
     http_response_code(404);
@@ -21,7 +15,7 @@ if (!isset($_GET['search'])) {
 }
 
 if ($link) {
-    $search = $_GET['search'];
+    $search = htmlspecialchars($_GET['search'], ENT_QUOTES);
     $cur_page = intval($_GET['page'] ?? 1);
 
     $page_items = 9;
@@ -61,9 +55,9 @@ $content = render_template('search', $lots, [
 ], $pages, $categories);
 $output = render_template('layout', [
     'title' => 'Результаты поиска',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'user_avatar' => $user_avatar,
+    'is_auth' => $is_auth['is_auth'],
+    'user_name' => $is_auth['user_name'],
+    'user_avatar' => $is_auth['user_avatar'],
     'categories' => $categories,
     'content' => $content
 ]);

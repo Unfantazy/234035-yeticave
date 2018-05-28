@@ -7,15 +7,10 @@ require_once 'init.php';
 require_once 'mysql_helper.php';
 require_once 'vendor/autoload.php';
 
-$is_auth = false;
-
-if (isset($_SESSION['id'])) {
-  $is_auth = true;
-  $user_name = $_SESSION['name'];
-  $user_avatar = $_SESSION['avatar'];
-} else {
-    http_response_code(403);
-    exit();
+$is_auth = check_auth();
+if (!$is_auth['is_auth']) {
+  http_response_code(403);
+  exit();
 }
 
 if ($link) {
@@ -37,12 +32,11 @@ foreach ($lots as $i => $array) {
     }
 }
 
-$class_name = "";
-$timer = "";
-
 foreach ($lots as $i => $array) {
     foreach ($array as $key => &$value) {
         $text = time_left($array['completion_date']);
+        $class_name = "";
+        $timer = "";
         if (strtotime($array['completion_date']) < strtotime('now')) {
             $class_name = "rates__item--end";
             $timer = "timer--end";
@@ -63,9 +57,9 @@ foreach ($lots as $i => $array) {
 $content = render_template('my-lots', $categories, $lots);
 $output = render_template('layout', [
     'title' => 'Мои лоты',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'user_avatar' => $user_avatar,
+    'is_auth' => $is_auth['is_auth'],
+    'user_name' => $is_auth['user_name'],
+    'user_avatar' => $is_auth['user_avatar'],
     'categories' => $categories,
     'content' => $content
 ]);
