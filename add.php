@@ -32,6 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $add_lot = $_POST;
 
+    foreach ($add_lot as $key => $value) {
+        $add_lot[$key] = htmlspecialchars($value, ENT_QUOTES);
+    }
+
     $required_fields = ['lot-name', 'category', 'message', 'lot-date'];
     $required_num_fields = ['lot-rate', 'lot-step'];
 

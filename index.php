@@ -5,6 +5,7 @@ require_once 'db_functions.php';
 require_once 'config.php';
 require_once 'init.php';
 require_once 'vendor/autoload.php';
+require_once 'getwinner.php';
 
 $is_auth = false;
 

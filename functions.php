@@ -44,12 +44,25 @@ function render_template($tpl, $data, $extra = [], $values = [], $inf = []) {
 
 /**
  * Функция вычисления остатка времени
+ * @param $end_time дата завершения
  * @return возвращает форматированный остаток времени
 */
-function time_left() {
+function time_left($end_time) {
     date_default_timezone_set('Europe/Moscow');
-    $timer = strtotime('tomorrow') - strtotime('now');
+    $timer = strtotime($end_time) - strtotime('now');
+    if ($timer <=0 ) {
+        return 0;
+    }
+    $days = floor($timer / 86400);
+    $timer = $timer - ($days * 86400);
     $hours = floor($timer / 3600);
-    $minutes = floor(($timer % 3600) / 60);
-    return sprintf('%02d', $hours) . ':' . sprintf('%02d', $minutes);
+    $timer = $timer - ($hours * 3600);
+    $minutes = floor($timer / 60);
+    if ($days <= 0) {
+        return sprintf('%02d', $hours) . ':' . sprintf('%02d', $minutes);
+    }
+    if ($days <= 0 && $hours <= 0) {
+        return sprintf('%02d', $minutes);
+    }
+    return sprintf('%02d', $days) . ':' . sprintf('%02d', $hours) . ':' . sprintf('%02d', $minutes);
 }

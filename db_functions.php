@@ -8,13 +8,67 @@ require_once 'vendor/autoload.php';
  */
 function get_lots() {
     return "
-    SELECT lots.id, lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
+    SELECT lots.id, lots.name, lots.initial_price, lots.completion_date, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
     FROM lots
     INNER JOIN categories ON lots.category_id = categories.id
     LEFT JOIN bets ON lots.id = bets.lot_id
     WHERE lots.completion_date > NOW()
     GROUP BY lots.name, lots.initial_price, lots.image, categories.name, lots.creation_date, lots.id
     ORDER BY lots.creation_date DESC;
+    ";
+}
+
+/**
+ * Функция запроса на получение ставок пользователя
+ * @return возвращает SQL-запрос
+ */
+function get_lots_for_user() {
+    return "
+    SELECT bets.user_id, bets.id, lots.name, lots.completion_date, lots.image, lots.description, categories.name as category, bets.amount, bets.lot_id, lots.winner_id, bets.date, lots.completion_date
+    FROM bets
+    INNER JOIN lots ON lots.id = bets.lot_id
+    LEFT JOIN categories ON lots.category_id = categories.id
+    WHERE user_id = ?
+    ORDER BY bets.date DESC;
+    ";
+}
+
+/**
+ * Функция запроса на получение лотов с вышедшим временем
+ * @return возвращает SQL-запрос
+ */
+function get_lots_wo_winner() {
+    return "
+    SELECT lots.id, lots.name, MAX(bets.amount) as max_bet
+    FROM lots
+    INNER JOIN bets ON lots.id = bets.lot_id
+    WHERE lots.completion_date <= NOW() and lots.winner_id IS NULL
+    GROUP BY lots.id, lots.name;
+    ";
+}
+
+/**
+ * Функция запроса на получение победителя
+ * @return возвращает SQL-запрос
+ */
+function get_winner() {
+    return "
+    SELECT bets.user_id, users.name, users.email
+    FROM bets
+    INNER JOIN users ON bets.user_id = users.id
+    WHERE bets.amount = ?;
+    ";
+}
+
+/**
+ * Функция запроса на добавление победителя
+ * @return возвращает SQL-запрос
+ */
+function post_winner() {
+    return "
+    UPDATE lots 
+    SET winner_id = ?
+    WHERE id = ?;
     ";
 }
 
@@ -49,12 +103,12 @@ function count_lots_for_category() {
  */
 function lots_for_category() {
     return "
-    SELECT lots.id, lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
+    SELECT lots.id, lots.name, lots.initial_price, lots.completion_date, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
     FROM lots
     INNER JOIN categories ON lots.category_id = categories.id
     LEFT JOIN bets ON lots.id = bets.lot_id
     WHERE lots.completion_date > NOW() AND categories.name = ?
-    GROUP BY lots.name, lots.initial_price, lots.image, categories.name, lots.creation_date, lots.id
+    GROUP BY lots.name, lots.initial_price, lots.completion_date, lots.image, categories.name, lots.creation_date, lots.id
     ORDER BY lots.creation_date DESC LIMIT ? OFFSET ?;
     ";
 }
@@ -65,12 +119,12 @@ function lots_for_category() {
  */
 function search_lots() {
     return "
-    SELECT lots.id, lots.name, lots.initial_price, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
+    SELECT lots.id, lots.name, lots.initial_price, lots.completion_date, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
     FROM lots
     INNER JOIN categories ON lots.category_id = categories.id
     LEFT JOIN bets ON lots.id = bets.lot_id
     WHERE lots.completion_date > NOW() AND MATCH(lots.name, lots.description) AGAINST(?)
-    GROUP BY lots.name, lots.initial_price, lots.image, categories.name, lots.creation_date, lots.id
+    GROUP BY lots.name, lots.initial_price, lots.completion_date, lots.image, categories.name, lots.creation_date, lots.id
     ORDER BY lots.creation_date DESC LIMIT ? OFFSET ?;
     ";
 }
@@ -91,7 +145,7 @@ function get_categories() {
  */
 function get_lot_for_id($lot_id) {
     return "
-    SELECT lots.id, lots.name, lots.description, lots.image, lots.step_lot, lots.author_id, categories.name as category, COUNT(bets.lot_id) as betsCount, IFNULL(MAX(bets.amount), 0) + lots.initial_price as betsPrice
+    SELECT lots.id, lots.name, lots.description, lots.completion_date, lots.image, lots.step_lot, lots.author_id, categories.name as category, COUNT(bets.lot_id) as betsCount, IFNULL(MAX(bets.amount), 0) + lots.initial_price as betsPrice
     FROM lots
     INNER JOIN categories ON lots.category_id = categories.id
     LEFT JOIN bets ON lots.id = bets.lot_id
