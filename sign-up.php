@@ -7,13 +7,7 @@ require_once 'db_functions.php';
 require_once 'mysql_helper.php';
 require_once 'vendor/autoload.php';
 
-$is_auth = false;
-
-if (isset($_SESSION['id'])) {
-  $is_auth = true;
-  $user_name = $_SESSION['name'];
-  $user_avatar = $_SESSION['avatar'];
-}
+$is_auth = check_auth();
 
 $errors = [];
 $new_user = [];
@@ -88,9 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $content = render_template('sign-up', $categories, $errors, $new_user);
 $output = render_template('layout', [
     'title' => 'Регистрация аккаунта',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'user_avatar' => $user_avatar,
+    'is_auth' => $is_auth['is_auth'],
+    'user_name' => $is_auth['user_name'],
+    'user_avatar' => $is_auth['user_avatar'],
     'categories' => $categories,
     'content' => $content
 ]);

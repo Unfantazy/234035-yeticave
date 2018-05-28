@@ -7,13 +7,7 @@ require_once 'init.php';
 require_once 'mysql_helper.php';
 require_once 'vendor/autoload.php';
 
-$is_auth = false;
-
-if (isset($_SESSION['id'])) {
-  $is_auth = true;
-  $user_name = $_SESSION['name'];
-  $user_avatar = $_SESSION['avatar'];
-}
+$is_auth = check_auth();
 
 if (!isset($_GET['category'])) {
     http_response_code(404);
@@ -21,7 +15,7 @@ if (!isset($_GET['category'])) {
 }
 
 if ($link) {
-    $category = $_GET['category'];
+    $category = htmlspecialchars($_GET['category'], ENT_QUOTES);
     $cur_page = intval($_GET['page'] ?? 1);
     $page_items = 9;
     $sql_category = get_categories();
@@ -60,9 +54,9 @@ $content = render_template('all-lots', $lots, [
 ], $pages, $categories);
 $output = render_template('layout', [
     'title' => 'Лоты по категории',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'user_avatar' => $user_avatar,
+    'is_auth' => $is_auth['is_auth'],
+    'user_name' => $is_auth['user_name'],
+    'user_avatar' => $is_auth['user_avatar'],
     'categories' => $categories,
     'content' => $content
 ]);

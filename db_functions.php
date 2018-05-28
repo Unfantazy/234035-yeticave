@@ -8,7 +8,7 @@ require_once 'vendor/autoload.php';
  */
 function get_lots() {
     return "
-    SELECT lots.id, lots.name, lots.initial_price, lots.completion_date, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) + lots.initial_price as betsPrice
+    SELECT lots.id, lots.name, lots.initial_price, lots.completion_date, lots.image, categories.name as category, COUNT(bets.lot_id) as betsCount, MAX(bets.amount) as betsPrice
     FROM lots
     INNER JOIN categories ON lots.category_id = categories.id
     LEFT JOIN bets ON lots.id = bets.lot_id
@@ -66,7 +66,7 @@ function get_winner() {
  */
 function post_winner() {
     return "
-    UPDATE lots 
+    UPDATE lots
     SET winner_id = ?
     WHERE id = ?;
     ";
@@ -145,7 +145,7 @@ function get_categories() {
  */
 function get_lot_for_id($lot_id) {
     return "
-    SELECT lots.id, lots.name, lots.description, lots.completion_date, lots.image, lots.step_lot, lots.author_id, categories.name as category, COUNT(bets.lot_id) as betsCount, IFNULL(MAX(bets.amount), 0) + lots.initial_price as betsPrice
+    SELECT lots.id, lots.name, lots.description, lots.completion_date, lots.image, lots.step_lot, lots.author_id, categories.name as category, COUNT(bets.lot_id) as betsCount, IFNULL(MAX(bets.amount), lots.initial_price) as betsPrice
     FROM lots
     INNER JOIN categories ON lots.category_id = categories.id
     LEFT JOIN bets ON lots.id = bets.lot_id

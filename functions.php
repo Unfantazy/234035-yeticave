@@ -66,3 +66,18 @@ function time_left($end_time) {
     }
     return sprintf('%02d', $days) . ':' . sprintf('%02d', $hours) . ':' . sprintf('%02d', $minutes);
 }
+
+/**
+ * Функция проверки сессии
+ * @return возвращает массив данных авторизации
+*/
+function check_auth() {
+  $data = [];
+  $data['is_auth'] = false;
+  if (isset($_SESSION['id'])) {
+    $data['is_auth'] = true;
+    $data['user_name'] = $_SESSION['name'];
+    $data['user_avatar'] = $_SESSION['avatar'];
+  }
+  return $data;
+}
